@@ -1653,6 +1653,46 @@ boolean Adafruit_FONA::HTTP_POST_start(char *url,
   return true;
 }
 
+
+boolean Adafruit_FONA::HTTP_POST_start(char *url,
+              FONAFlashStringPtr contenttype, const String& header,
+              const uint8_t *postdata, uint16_t postdatalen,
+              uint16_t *status, uint16_t *datalen){
+  if (! HTTP_setup(url))
+    return false;
+
+  if (! HTTP_para(F("CONTENT"), contenttype)) {
+    return false;
+  }
+
+  // HTTP USERDATA
+  const char *head = header.c_str();
+
+  if(! HTTP_para(F("USERDATA"), head)){
+	  return false;
+  }
+
+  // HTTP POST data
+  if (! HTTP_data(postdatalen, 10000))
+    return false;
+  mySerial->write(postdata, postdatalen);
+  if (! expectReply(ok_reply))
+    return false;
+
+  // HTTP POST
+  if (! HTTP_action(FONA_HTTP_POST, status, datalen))
+    return false;
+
+  DEBUG_PRINT(F("Status: ")); DEBUG_PRINTLN(*status);
+  DEBUG_PRINT(F("Len: ")); DEBUG_PRINTLN(*datalen);
+
+  // HTTP response data
+  if (! HTTP_readall(datalen))
+    return false;
+
+  return true;
+}
+
 void Adafruit_FONA::HTTP_POST_end(void) {
   HTTP_term();
 }

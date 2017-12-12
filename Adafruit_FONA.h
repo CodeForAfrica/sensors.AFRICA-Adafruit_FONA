@@ -170,6 +170,7 @@ class Adafruit_FONA : public FONAStreamType {
   boolean HTTP_GET_start(char *url, uint16_t *status, uint16_t *datalen);
   void HTTP_GET_end(void);
   boolean HTTP_POST_start(char *url, FONAFlashStringPtr contenttype, const uint8_t *postdata, uint16_t postdatalen,  uint16_t *status, uint16_t *datalen);
+  boolean HTTP_POST_start(char *url, FONAFlashStringPtr contenttype, const String& header, const uint8_t *postdata, uint16_t postdatalen, uint16_t *status, uint16_t *datalen);
   void HTTP_POST_end(void);
   void setUserAgent(FONAFlashStringPtr useragent);
 
