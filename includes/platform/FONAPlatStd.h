@@ -37,7 +37,11 @@
   #include <NewSoftSerial.h>
 #endif
 
-#include <avr/pgmspace.h>
+#if defined(ESP8266)
+	#include <pgmspace.h>
+#else if (defined(__AVR__))
+	#include <avr\pgmspace.h>
+#endif
 
 
 // DebugStream	sets the Stream output to use
