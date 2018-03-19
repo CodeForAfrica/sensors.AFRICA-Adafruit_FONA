@@ -40,7 +40,7 @@
 #if defined(ESP8266)
 	#include <pgmspace.h>
 #else if (defined(__AVR__))
-	#include <avr\pgmspace.h>
+	#include <avr/pgmspace.h>
 #endif
 
 
