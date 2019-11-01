@@ -369,7 +369,7 @@ boolean Adafruit_FONA::setPWM(uint16_t period, uint8_t duty) {
 /********* CALL PHONES **************************************************/
 boolean Adafruit_FONA::callPhone(char *number) {
   char sendbuff[35] = "ATD";
-  strncpy(sendbuff+3, number, min(30, strlen(number)));
+  strncpy(sendbuff+3, number, std::min<int>(30, strlen(number)));
   uint8_t x = strlen(sendbuff);
   sendbuff[x] = ';';
   sendbuff[x+1] = 0;
@@ -519,7 +519,7 @@ boolean Adafruit_FONA::readSMS(uint8_t i, char *smsbuff,
 
   flushInput();
 
-  uint16_t thelen = min(maxlen, strlen(replybuffer));
+  uint16_t thelen = std::min<uint16_t>(maxlen, strlen(replybuffer));
   strncpy(smsbuff, replybuffer, thelen);
   smsbuff[thelen] = 0; // end the string
 
@@ -645,7 +645,7 @@ boolean Adafruit_FONA::sendUSSD(char *ussdmsg, char *ussdbuff, uint16_t maxlen, 
       // Find " to get end of ussd message.
       char *strend = strchr(p, '\"');
 
-      uint16_t lentocopy = min(maxlen-1, strend - p);
+      uint16_t lentocopy = std::min<uint16_t>(maxlen-1, strend - p);
       strncpy(ussdbuff, p, lentocopy+1);
       ussdbuff[lentocopy] = 0;
       *readlen = lentocopy;
@@ -707,7 +707,7 @@ boolean Adafruit_FONA::getTime(char *buff, uint16_t maxlen) {
     return false;
 
   char *p = replybuffer+7;
-  uint16_t lentocopy = min(maxlen-1, strlen(p));
+  uint16_t lentocopy = std::min<uint16_t>(maxlen-1, strlen(p));
   strncpy(buff, p, lentocopy+1);
   buff[lentocopy] = 0;
 
@@ -835,7 +835,7 @@ uint8_t Adafruit_FONA::getGPS(uint8_t arg, char *buffer, uint8_t maxbuff) {
 
   p+=6;
 
-  uint8_t len = max(maxbuff-1, strlen(p));
+  uint8_t len = std::max<uint8_t>(maxbuff-1, strlen(p));
   strncpy(buffer, p, len);
   buffer[len] = 0;
 
@@ -1302,7 +1302,7 @@ boolean Adafruit_FONA::getGSMLoc(uint16_t *errorcode, char *buff, uint16_t maxle
     return false;
 
   char *p = replybuffer+14;
-  uint16_t lentocopy = min(maxlen-1, strlen(p));
+  uint16_t lentocopy = std::min<uint16_t>(maxlen-1, strlen(p));
   strncpy(buff, p, lentocopy+1);
 
   readline(); // eat OK
